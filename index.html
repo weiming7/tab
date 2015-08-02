@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <title></title>
+    <style>
+        #box,#box2{
+            width: 300px;
+        }
+        #box div,#box2 div{
+            width: 200px;
+            height: 300px;
+            border: 1px solid red;
+            display: none;
+        }
+        .active{
+            background: red;
+        }
+    </style>
+</head>
+<body>
+
+
+<div id="box">
+    <input type="button" value="1" class="active"/>
+    <input type="button" value="2"/>
+    <input type="button" value="3"/>
+    <div style="display: block">1</div>
+    <div>2</div>
+    <div>3</div>
+</div>
+
+<div id="box2">
+    <input type="button" value="1" class="active"/>
+    <input type="button" value="2"/>
+    <input type="button" value="3"/>
+    <div style="display: block">1</div>
+    <div>2</div>
+    <div>3</div>
+</div>
+
+
+<script>
+
+    window.onload = function () {
+        var tab = new Tab('box');
+        tab.init();
+
+        var tab2 = new Tab('box2');
+        tab2.init();
+        tab2.autoPlay();
+    }
+
+    function Tab(id){
+        this.oParent = document.getElementById(id);
+        this.aInput = this.oParent.getElementsByTagName('input');
+        this.aDiv = this.oParent.getElementsByTagName('div');
+        this.iNow = 0;
+    }
+
+    Tab.prototype.init = function () {
+        var This = this;
+        for(var i = 0;i<this.aInput.length;i++){
+            this.aInput[i].index = i;
+            this.aInput[i].onclick = function () {
+                This.change(this);
+            };
+        }
+    }
+
+    Tab.prototype.change = function (obj) {
+        for(var i = 0;i<this.aInput.length;i++){
+            this.aInput[i].className = '';
+            this.aDiv[i].style.display = 'none';
+        }
+        obj.className = 'active';
+        this.aDiv[obj.index].style.display = 'block';
+    }
+    
+    Tab.prototype.autoPlay = function () {
+
+        var This = this;
+
+        setInterval(function () {
+            if(This.iNow == This.aInput.length-1){
+                This.iNow = 0;
+            }else{
+                This.iNow++;
+            }
+            for(var i = 0;i<This.aInput.length;i++){
+                This.aInput[i].className = '';
+                This.aDiv[i].style.display = 'none';
+            }
+           This.aInput[This.iNow].className = 'active';
+           This.aDiv[This.iNow].style.display = 'block';
+
+        },2000);
+    }
+
+
+</script>
+
+
+</body>
+</html>
